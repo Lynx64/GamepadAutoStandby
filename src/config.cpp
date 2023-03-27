@@ -2,10 +2,14 @@
 #include "common.h"
 #include "retain_vars.hpp"
 #include <wups.h>
+#include <wups/config/WUPSConfigItemBoolean.h>
 #include <wups/config/WUPSConfigItemIntegerRange.h>
 #include <wups/config/WUPSConfigItemMultipleValues.h>
 #include <coreinit/time.h>
+#include <nsysccr/cdc.h>
 #include <string_view>
+
+static bool sShutdownNow = false;
 
 WUPS_USE_STORAGE("gamepad_auto_standby");
 
@@ -48,6 +52,15 @@ void initConfig()
         gStandbyDelay = 60;
     }
     gStandbyDelayTicks = OSSecondsToTicks(gStandbyDelay * 60);
+}
+
+void boolItemCallback(ConfigItemBoolean *item, bool newValue) {
+    if (item && item->configId) {
+        //new value changed
+        if (std::string_view(item->configId) == "shutdownNow") {
+            sShutdownNow = newValue;
+        }
+    }
 }
 
 void multipleValueItemCallback(ConfigItemMultipleValues *item, uint32_t newValue) 
@@ -100,7 +113,7 @@ WUPS_GET_CONFIG()
 
     ConfigItemMultipleValuesPair mode[3];
     mode[0].value       = ON_IDLE_NOTHING;
-    mode[0].valueName   = (char *) "Nothing";
+    mode[0].valueName   = (char *) "Do nothing";
 
     mode[1].value       = ON_IDLE_STANDBY;
     mode[1].valueName   = (char *) "Standby";
@@ -117,6 +130,10 @@ WUPS_GET_CONFIG()
         }
         curIndex++;
     }
+    //you could also get the DRC state, but I don't know what all the possible states are/what they mean, and this code is more simple anyway and seems to get the job done
+    if (CCRCDCDevicePing(CCR_CDC_DESTINATION_DRC0) == 0) {
+        WUPSConfigItemBoolean_AddToCategoryHandled(config, setting, "shutdownNow", "Power off Gamepad now", sShutdownNow, &boolItemCallback);
+    }
 
     WUPSConfigItemMultipleValues_AddToCategoryHandled(config, setting, "onIdleMode", "On idle", defaultIndex, mode,
                                                       sizeof(mode) / sizeof(mode[0]), &multipleValueItemCallback);
@@ -132,5 +149,11 @@ WUPS_CONFIG_CLOSED()
     if (WUPS_CloseStorage() != WUPS_STORAGE_ERROR_SUCCESS) {
         //failed to close storage
     }
+
     gStandbyDelayTicks = OSSecondsToTicks(gStandbyDelay * 60);
+    if (sShutdownNow) {
+        CCRCDCSysConsoleShutdownInd(CCR_CDC_DESTINATION_DRC0);
+        gInShutdown = true;
+        sShutdownNow = false;
+    }
 }

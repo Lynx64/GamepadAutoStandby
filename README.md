@@ -1,5 +1,5 @@
-# Gamepad Auto Standby
-This is a Wii U plugin which makes the Gamepad automatically enter standby mode or power off when left idle for a configurable amount of time (similar to any other controller).
+# GamePad Auto Standby
+This is a Wii U plugin which makes the GamePad automatically enter standby mode or power off when left idle for a configurable amount of time (similar to any other controller).
 
 ## Installation
 Download the latest release from [here](https://github.com/Lynx64/GamepadAutoStandby/releases)<br/>

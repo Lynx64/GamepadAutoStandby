@@ -3,7 +3,7 @@
 #include <wups.h>
 
 // Mandatory plugin info
-WUPS_PLUGIN_NAME("Gamepad Auto Standby");
+WUPS_PLUGIN_NAME("GamePad Auto Standby");
 WUPS_PLUGIN_DESCRIPTION(DESCRIPTION);
 WUPS_PLUGIN_VERSION(VERSION);
 WUPS_PLUGIN_AUTHOR("Lynx64");

@@ -106,7 +106,7 @@ WUPS_GET_CONFIG()
     }
 
     WUPSConfigHandle config;
-    WUPSConfig_CreateHandled(&config, "Gamepad Auto Standby");
+    WUPSConfig_CreateHandled(&config, "GamePad Auto Standby");
 
     WUPSConfigCategoryHandle setting;
     WUPSConfig_AddCategoryByNameHandled(config, "Settings", &setting);
@@ -132,7 +132,7 @@ WUPS_GET_CONFIG()
     }
     //you could also get the DRC state, but I don't know what all the possible states are/what they mean, and this code is more simple anyway and seems to get the job done
     if (CCRCDCDevicePing(CCR_CDC_DESTINATION_DRC0) == 0) {
-        WUPSConfigItemBoolean_AddToCategoryHandled(config, setting, "shutdownNow", "Power off Gamepad now", sShutdownNow, &boolItemCallback);
+        WUPSConfigItemBoolean_AddToCategoryHandled(config, setting, "shutdownNow", "Power off GamePad now", sShutdownNow, &boolItemCallback);
     }
 
     WUPSConfigItemMultipleValues_AddToCategoryHandled(config, setting, "onIdleMode", "On idle", defaultIndex, mode,

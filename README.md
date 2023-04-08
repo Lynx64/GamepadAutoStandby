@@ -7,7 +7,7 @@ Copy the .wps file into `wiiu/environments/[ENVIRONMENT]/plugins`<br/>
 where [ENVIRONMENT] is the actual environment name (most likely 'aroma')
 
 ## Usage
-Open the plugin config menu by pressing L + Down + SELECT on the Gamepad, Pro Controller or Classic Controller.
+Open the plugin config menu by pressing L, DPAD Down and Minus on the GamePad, Pro Controller or Classic Controller, or B, DPAD Down and Minus on a Wii Remote.
 
 ## Building
 For building you need:

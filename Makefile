@@ -21,7 +21,7 @@ WUT_ROOT := $(DEVKITPRO)/wut
 #-------------------------------------------------------------------------------
 TARGET		:=	gamepad_auto_standby
 BUILD		:=	build
-SOURCES		:=	src
+SOURCES		:=	src src/config
 DATA		:=	data
 INCLUDES	:=	src
 

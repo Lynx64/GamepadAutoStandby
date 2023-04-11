@@ -1,6 +1,8 @@
 #include "config.h"
 #include "common.h"
 #include "retain_vars.hpp"
+#include "config/WUPSConfigItemCheckbox.h"
+#include "config/WUPSConfigItemWakeDrc.h"
 #include <wups.h>
 #include <wups/config/WUPSConfigItemBoolean.h>
 #include <wups/config/WUPSConfigItemIntegerRange.h>
@@ -54,7 +56,17 @@ void initConfig()
     gStandbyDelayTicks = OSSecondsToTicks(gStandbyDelay * 60);
 }
 
-void boolItemCallback(ConfigItemBoolean *item, bool newValue) {
+void checkboxItemChanged(ConfigItemCheckbox *item, bool newValue) 
+{
+    if (item && item->configId) {
+        if (std::string_view(item->configId) == "shutdownNow") {
+            sShutdownNow = newValue;
+        }
+    }
+}
+
+void boolItemCallback(ConfigItemBoolean *item, bool newValue) 
+{
     if (item && item->configId) {
         //new value changed
         if (std::string_view(item->configId) == "shutdownNow") {
@@ -130,9 +142,11 @@ WUPS_GET_CONFIG()
         }
         curIndex++;
     }
-    //you could also get the DRC state, but I don't know what all the possible states are/what they mean, and this code is more simple anyway and seems to get the job done
-    if (CCRCDCDevicePing(CCR_CDC_DESTINATION_DRC0) == 0) {
-        WUPSConfigItemBoolean_AddToCategoryHandled(config, setting, "shutdownNow", "Power off GamePad now", sShutdownNow, &boolItemCallback);
+
+    if (CCRCDCDevicePing(CCR_CDC_DESTINATION_DRC0) == 0) { //if gamepad connected
+        WUPSConfigItemCheckbox_AddToCategoryHandled(config, setting, "shutdownNow", "Power off GamePad", sShutdownNow, &checkboxItemChanged);
+    } else { //gamepad not connected
+        WUPSConfigItemWakeDrc_AddToCategoryHandled(config, setting, "wakeDrc", "Power on GamePad", nullptr);
     }
 
     WUPSConfigItemMultipleValues_AddToCategoryHandled(config, setting, "onIdleMode", "On idle", defaultIndex, mode,

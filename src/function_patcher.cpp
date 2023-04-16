@@ -4,6 +4,7 @@
 #include <wups.h>
 #include <coreinit/time.h>
 #include <nsysccr/cdc.h>
+#include <nn/cmpt/cmpt.h>
 
 static OSTime sLastInputGamepad = OSGetSystemTime();
 static bool sInStandby = false;
@@ -69,4 +70,11 @@ DECL_FUNCTION(int32_t, VPADRead, VPADChan chan, VPADStatus *buffer, uint32_t buf
     return result;
 }
 
+DECL_FUNCTION(int32_t, CMPTAcctSetScreenType, CmptScreenType type)
+{
+    if (gWiiForwarderTVOnly && type == CMPT_SCREEN_TYPE_BOTH) {type = CMPT_SCREEN_TYPE_TV;}
+    return real_CMPTAcctSetScreenType(type);
+}
+
 WUPS_MUST_REPLACE_FOR_PROCESS(VPADRead, WUPS_LOADER_LIBRARY_VPAD, VPADRead, WUPS_FP_TARGET_PROCESS_ALL);
+WUPS_MUST_REPLACE_FOR_PROCESS(CMPTAcctSetScreenType, WUPS_LOADER_LIBRARY_NN_CMPT, CMPTAcctSetScreenType, WUPS_FP_TARGET_PROCESS_GAME);

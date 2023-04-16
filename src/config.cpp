@@ -42,6 +42,11 @@ void initConfig()
             //failed to get value
         }
 
+        if ((storageRes = WUPS_GetBool(nullptr, "wiiForwarderTVOnly", &gWiiForwarderTVOnly)) == WUPS_STORAGE_ERROR_NOT_FOUND) {
+            // Add the value to the storage if it's missing
+            WUPS_StoreBool(nullptr, "wiiForwarderTVOnly", gWiiForwarderTVOnly);
+        }
+
         // Close storage
         if (WUPS_CloseStorage() != WUPS_STORAGE_ERROR_SUCCESS) {
             //failed to close storage
@@ -69,8 +74,9 @@ void boolItemCallback(ConfigItemBoolean *item, bool newValue)
 {
     if (item && item->configId) {
         //new value changed
-        if (std::string_view(item->configId) == "shutdownNow") {
-            sShutdownNow = newValue;
+        if (std::string_view(item->configId) == "wiiForwarderTVOnly") {
+            gWiiForwarderTVOnly = newValue;
+            WUPS_StoreBool(nullptr, item->configId, gWiiForwarderTVOnly);
         }
     }
 }
@@ -153,6 +159,8 @@ WUPS_GET_CONFIG()
                                                       sizeof(mode) / sizeof(mode[0]), &multipleValueItemCallback);
 
     WUPSConfigItemIntegerRange_AddToCategoryHandled(config, setting, "standbyDelay", "Delay (minutes)", gStandbyDelay, 1, 60, &integerRangeItemCallback);
+
+    WUPSConfigItemBoolean_AddToCategoryHandled(config, setting, "wiiForwarderTVOnly", "Launch .wuhb vWii forwarders on TV only", gWiiForwarderTVOnly, &boolItemCallback);
 
     return config;
 }

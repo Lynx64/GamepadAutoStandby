@@ -6,17 +6,18 @@
 #include <nsysccr/cdc.h>
 #include <nn/cmpt/cmpt.h>
 
+extern "C" uint32_t VPADGetButtonProcMode(VPADChan chan);
+
 static OSTime sLastInputGamepad = OSGetSystemTime();
 static bool sInStandby = false;
 
-extern "C" uint32_t VPADGetButtonProcMode(VPADChan chan);
-DECL_FUNCTION(int32_t, VPADRead, VPADChan chan, VPADStatus *buffer, uint32_t buffer_size, VPADReadError *error) 
+DECL_FUNCTION(int32_t, VPADRead, VPADChan chan, VPADStatus *buffer, uint32_t bufferSize, VPADReadError *error)
 {
     VPADReadError realError;
-    int32_t result = real_VPADRead(chan, buffer, buffer_size, &realError);
+    int32_t result = real_VPADRead(chan, buffer, bufferSize, &realError);
     uint32_t end = 1;
     if (VPADGetButtonProcMode(chan) == 1) {
-        end = buffer_size;
+        end = bufferSize;
     }
 
     if (result > 0 && realError == VPAD_READ_SUCCESS) {

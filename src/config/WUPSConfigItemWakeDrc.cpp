@@ -10,17 +10,17 @@ typedef struct CCRCDCWowlWakeDrcArgs CCRCDCWowlWakeDrcArgs;
 
 struct WUT_PACKED CCRCDCWowlWakeDrcArgs
 {
-    WUT_PADDING_BYTES(6);
+    WUT_PADDING_BYTES(0x6);
     //! Must be 1 or 2
     uint8_t arg;
 };
-WUT_CHECK_OFFSET(CCRCDCWowlWakeDrcArgs, 6, arg);
-WUT_CHECK_SIZE(CCRCDCWowlWakeDrcArgs, 7);
+WUT_CHECK_OFFSET(CCRCDCWowlWakeDrcArgs, 0x6, arg);
+WUT_CHECK_SIZE(CCRCDCWowlWakeDrcArgs, 0x7);
 
 /**
  * \return
  * 0 on success or timeout (i.e. out of range/no battery).
- * 0xFFE31B5B if DRC0 already connected.
+ * 0xFFE31B5B if DRC already connected.
  */
 extern "C" int32_t CCRCDCWowlWakeDrc(CCRCDCWowlWakeDrcArgs *args);
 

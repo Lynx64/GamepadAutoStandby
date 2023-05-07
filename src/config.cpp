@@ -18,39 +18,26 @@ WUPS_USE_STORAGE("gamepad_auto_standby");
 void initConfig()
 {
     // Open storage to read values
-    WUPSStorageError storageRes = WUPS_OpenStorage();
-    if (storageRes != WUPS_STORAGE_ERROR_SUCCESS) {
-        //failed to open storage
-    } else {
+    if (WUPS_OpenStorage() == WUPS_STORAGE_ERROR_SUCCESS) {
         // Try to get value from storage
-        if ((storageRes = WUPS_GetInt(nullptr, "onIdleMode", reinterpret_cast<int32_t *>(&gOnIdleMode))) == WUPS_STORAGE_ERROR_NOT_FOUND) {
+        if (WUPS_GetInt(nullptr, "onIdleMode", reinterpret_cast<int32_t *>(&gOnIdleMode)) == WUPS_STORAGE_ERROR_NOT_FOUND) {
             // Add the value to the storage if it's missing
-            if (WUPS_StoreInt(nullptr, "onIdleMode", (int32_t) gOnIdleMode) != WUPS_STORAGE_ERROR_SUCCESS) {
-                //failed to store value
-            }
-        } else if (storageRes != WUPS_STORAGE_ERROR_SUCCESS) {
-            //failed to get value
+            WUPS_StoreInt(nullptr, "onIdleMode", (int32_t) gOnIdleMode);
         }
 
         // Try to get value from storage
-        if ((storageRes = WUPS_GetInt(nullptr, "standbyDelay", reinterpret_cast<int32_t *>(&gStandbyDelay))) == WUPS_STORAGE_ERROR_NOT_FOUND) {
+        if (WUPS_GetInt(nullptr, "standbyDelay", reinterpret_cast<int32_t *>(&gStandbyDelay)) == WUPS_STORAGE_ERROR_NOT_FOUND) {
             // Add the value to the storage if it's missing
-            if (WUPS_StoreInt(nullptr, "standbyDelay", (int32_t) gStandbyDelay) != WUPS_STORAGE_ERROR_SUCCESS) {
-                //failed to store value
-            }
-        } else if (storageRes != WUPS_STORAGE_ERROR_SUCCESS) {
-            //failed to get value
+            WUPS_StoreInt(nullptr, "standbyDelay", (int32_t) gStandbyDelay);
         }
 
-        if ((storageRes = WUPS_GetBool(nullptr, "wiiForwarderTVOnly", &gWiiForwarderTVOnly)) == WUPS_STORAGE_ERROR_NOT_FOUND) {
+        if (WUPS_GetBool(nullptr, "wiiForwarderTVOnly", &gWiiForwarderTVOnly) == WUPS_STORAGE_ERROR_NOT_FOUND) {
             // Add the value to the storage if it's missing
             WUPS_StoreBool(nullptr, "wiiForwarderTVOnly", gWiiForwarderTVOnly);
         }
 
         // Close storage
-        if (WUPS_CloseStorage() != WUPS_STORAGE_ERROR_SUCCESS) {
-            //failed to close storage
-        }
+        WUPS_CloseStorage();
     }
 
     if (gStandbyDelay < 1) {
@@ -156,7 +143,7 @@ WUPS_GET_CONFIG()
     }
 
     WUPSConfigItemMultipleValues_AddToCategoryHandled(config, setting, "onIdleMode", "On idle", defaultIndex, mode,
-                                                      sizeof(mode) / sizeof(mode[0]), &multipleValueItemCallback);
+                                                      3, &multipleValueItemCallback);
 
     WUPSConfigItemIntegerRange_AddToCategoryHandled(config, setting, "standbyDelay", "Delay (minutes)", gStandbyDelay, 1, 60, &integerRangeItemCallback);
 
@@ -168,9 +155,7 @@ WUPS_GET_CONFIG()
 WUPS_CONFIG_CLOSED()
 {
     // Save all changes
-    if (WUPS_CloseStorage() != WUPS_STORAGE_ERROR_SUCCESS) {
-        //failed to close storage
-    }
+    WUPS_CloseStorage();
 
     gStandbyDelayTicks = OSSecondsToTicks(gStandbyDelay * 60);
     if (sShutdownNow) {

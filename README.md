@@ -6,8 +6,8 @@ Power on the GamePad remotely from the plugin config menu (obviously it must be 
 Launch .wuhb vWii forwarders on TV only instead of both screens.
 
 ## Installation
-Download the latest release from [here](https://github.com/Lynx64/GamepadAutoStandby/releases)<br/>
-Copy the .wps file into `wiiu/environments/[ENVIRONMENT]/plugins`<br/>
+Download the latest release from the [Releases page](https://github.com/Lynx64/GamepadAutoStandby/releases)<br/>
+Copy the `.wps` file into `wiiu/environments/[ENVIRONMENT]/plugins`<br/>
 where [ENVIRONMENT] is the actual environment name (most likely 'aroma')
 
 ## Usage

@@ -5,6 +5,8 @@
 #include <coreinit/time.h>
 #include <nsysccr/cdc.h>
 #include <nn/cmpt/cmpt.h>
+#include <coreinit/title.h>
+#include <sysapp/title.h>
 
 extern "C" uint32_t VPADGetButtonProcMode(VPADChan chan);
 
@@ -73,7 +75,11 @@ DECL_FUNCTION(int32_t, VPADRead, VPADChan chan, VPADStatus *buffer, uint32_t buf
 
 DECL_FUNCTION(int32_t, CMPTAcctSetScreenType, CmptScreenType type)
 {
-    if (gWiiForwarderTVOnly && type == CMPT_SCREEN_TYPE_BOTH) {type = CMPT_SCREEN_TYPE_TV;}
+    if (gWiiForwarderTVOnly &&
+        type == CMPT_SCREEN_TYPE_BOTH &&
+        OSGetTitleID() == _SYSGetSystemApplicationTitleId(SYSTEM_APP_ID_HEALTH_AND_SAFETY)) //only do for homebrew
+        
+        type = CMPT_SCREEN_TYPE_TV;
     return real_CMPTAcctSetScreenType(type);
 }
 

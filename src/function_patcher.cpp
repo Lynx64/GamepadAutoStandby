@@ -15,7 +15,7 @@ static bool sInStandby = false;
 
 DECL_FUNCTION(int32_t, VPADRead, VPADChan chan, VPADStatus *buffer, uint32_t bufferSize, VPADReadError *error)
 {
-    VPADReadError realError;
+    VPADReadError realError = VPAD_READ_UNINITIALIZED;
     int32_t result = real_VPADRead(chan, buffer, bufferSize, &realError);
     uint32_t end = 1;
     if (VPADGetButtonProcMode(chan) == 1) {
@@ -31,7 +31,7 @@ DECL_FUNCTION(int32_t, VPADRead, VPADChan chan, VPADStatus *buffer, uint32_t buf
             
         } else if (sInStandby) {
 
-            VPADLcdMode lcdMode;
+            VPADLcdMode lcdMode = VPAD_LCD_ON;
             VPADGetLcdMode(VPAD_CHAN_0, &lcdMode);
             if (lcdMode != VPAD_LCD_STANDBY) {
                 sLastInputGamepad = OSGetSystemTime();
@@ -50,7 +50,7 @@ DECL_FUNCTION(int32_t, VPADRead, VPADChan chan, VPADStatus *buffer, uint32_t buf
             if (sLastInputGamepad + gStandbyDelayTicks < OSGetSystemTime()) {
 
                 if (gOnIdleMode == ON_IDLE_STANDBY) {
-                    VPADLcdMode lcdMode;
+                    VPADLcdMode lcdMode = VPAD_LCD_ON;
                     VPADGetLcdMode(VPAD_CHAN_0, &lcdMode);
                     if (lcdMode != VPAD_LCD_OFF) {
                         VPADSetLcdMode(VPAD_CHAN_0, VPAD_LCD_STANDBY);

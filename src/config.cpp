@@ -36,6 +36,10 @@ void initConfig()
             WUPS_StoreBool(nullptr, "wiiForwarderTVOnly", gWiiForwarderTVOnly);
         }
 
+        if (WUPS_GetBool(nullptr, "keepOnWhileCharging", &gKeepOnWhileCharging) == WUPS_STORAGE_ERROR_NOT_FOUND) {
+            WUPS_StoreBool(nullptr, "keepOnWhileCharging", gKeepOnWhileCharging);
+        }
+
         // Close storage
         WUPS_CloseStorage();
     }
@@ -64,6 +68,9 @@ void boolItemCallback(ConfigItemBoolean *item, bool newValue)
         if (std::string_view(item->configId) == "wiiForwarderTVOnly") {
             gWiiForwarderTVOnly = newValue;
             WUPS_StoreBool(nullptr, item->configId, gWiiForwarderTVOnly);
+        } else if (std::string_view(item->configId) == "keepOnWhileCharging") {
+            gKeepOnWhileCharging = newValue;
+            WUPS_StoreBool(nullptr, item->configId, gKeepOnWhileCharging);
         }
     }
 }
@@ -146,6 +153,8 @@ WUPS_GET_CONFIG()
                                                       3, &multipleValueItemCallback);
 
     WUPSConfigItemIntegerRange_AddToCategoryHandled(config, setting, "standbyDelay", "Delay (minutes)", gStandbyDelay, 1, 60, &integerRangeItemCallback);
+
+    WUPSConfigItemBoolean_AddToCategoryHandled(config, setting, "keepOnWhileCharging", "Keep on while charging", gKeepOnWhileCharging, &boolItemCallback);
 
     WUPSConfigItemBoolean_AddToCategoryHandled(config, setting, "wiiForwarderTVOnly", "Launch .wuhb vWii forwarders on TV only", gWiiForwarderTVOnly, &boolItemCallback);
 

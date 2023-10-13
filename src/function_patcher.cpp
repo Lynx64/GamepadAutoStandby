@@ -52,14 +52,14 @@ DECL_FUNCTION(int32_t, VPADRead, VPADChan chan, VPADStatus *buffer, uint32_t buf
                 if (gOnIdleMode == ON_IDLE_STANDBY) {
                     VPADLcdMode lcdMode = VPAD_LCD_ON;
                     VPADGetLcdMode(VPAD_CHAN_0, &lcdMode);
-                    if (lcdMode != VPAD_LCD_OFF) {
+                    if (lcdMode != VPAD_LCD_OFF && (!gKeepOnWhileCharging || buffer[0].battery != 0)) {
                         VPADSetLcdMode(VPAD_CHAN_0, VPAD_LCD_STANDBY);
                     }
                     sInStandby = true;
 
                 } else if (gOnIdleMode == ON_IDLE_SHUTDOWN) {
-                    //CCRSysDRCShutdown(); //this causes the console to crash when called in the HOME Menu/applets
-                    CCRCDCSysConsoleShutdownInd(CCR_CDC_DESTINATION_DRC0);
+                    if (!gKeepOnWhileCharging || buffer[0].battery != 0)
+                        CCRCDCSysConsoleShutdownInd(CCR_CDC_DESTINATION_DRC0);
                     gInShutdown = true;
                 }
 

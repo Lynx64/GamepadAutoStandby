@@ -40,6 +40,10 @@ void initConfig()
             WUPS_StoreBool(nullptr, "keepOnWhileCharging", gKeepOnWhileCharging);
         }
 
+        if (WUPS_GetBool(nullptr, "shutdownOnBoot", &gShutdownOnBoot) == WUPS_STORAGE_ERROR_NOT_FOUND) {
+            WUPS_StoreBool(nullptr, "shutdownOnBoot", gShutdownOnBoot);
+        }
+
         // Close storage
         WUPS_CloseStorage();
     }
@@ -71,6 +75,9 @@ void boolItemCallback(ConfigItemBoolean *item, bool newValue)
         } else if (std::string_view(item->configId) == "keepOnWhileCharging") {
             gKeepOnWhileCharging = newValue;
             WUPS_StoreBool(nullptr, item->configId, gKeepOnWhileCharging);
+        } else if (std::string_view(item->configId) == "shutdownOnBoot") {
+            gShutdownOnBoot = newValue;
+            WUPS_StoreBool(nullptr, item->configId, gShutdownOnBoot);
         }
     }
 }
@@ -153,6 +160,8 @@ WUPS_GET_CONFIG()
                                                       3, &multipleValueItemCallback);
 
     WUPSConfigItemIntegerRange_AddToCategoryHandled(config, setting, "standbyDelay", "Delay (minutes)", gStandbyDelay, 1, 60, &integerRangeItemCallback);
+
+    WUPSConfigItemBoolean_AddToCategoryHandled(config, setting, "shutdownOnBoot", "Power off on boot", gShutdownOnBoot, &boolItemCallback);
 
     WUPSConfigItemBoolean_AddToCategoryHandled(config, setting, "keepOnWhileCharging", "Keep on while charging", gKeepOnWhileCharging, &boolItemCallback);
 

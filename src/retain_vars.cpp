@@ -6,3 +6,4 @@ int64_t gStandbyDelayTicks = 0;
 bool gInShutdown = false;
 bool gWiiForwarderTVOnly = true;
 bool gKeepOnWhileCharging = false;
+bool gShutdownOnBoot = false;

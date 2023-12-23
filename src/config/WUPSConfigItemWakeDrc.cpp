@@ -6,24 +6,6 @@
 #include <coreinit/time.h>
 #include <nsysccr/cdc.h>
 
-typedef struct CCRCDCWowlWakeDrcArgs CCRCDCWowlWakeDrcArgs;
-
-struct WUT_PACKED CCRCDCWowlWakeDrcArgs
-{
-    WUT_PADDING_BYTES(0x6);
-    //! Must be 1 or 2
-    uint8_t arg;
-};
-WUT_CHECK_OFFSET(CCRCDCWowlWakeDrcArgs, 0x6, arg);
-WUT_CHECK_SIZE(CCRCDCWowlWakeDrcArgs, 0x7);
-
-/**
- * \return
- * 0 on success or timeout (i.e. out of range/no battery).
- * 0xFFE31B5B if DRC already connected.
- */
-extern "C" int32_t CCRCDCWowlWakeDrc(CCRCDCWowlWakeDrcArgs *args);
-
 int32_t WUPSConfigItemWakeDrc_getCurrentValueDisplay(void *context, char *out_buf, int32_t out_size) {
     auto *item = (ConfigItemWakeDrc *) context;
     if (item->value == 1) {
@@ -46,9 +28,9 @@ bool WUPSConfigItemWakeDrc_callCallback(void *context) {
 void WUPSConfigItemWakeDrc_onButtonPressed(void *context, WUPSConfigButtons buttons) {
     auto *item = (ConfigItemWakeDrc *) context;
     if ((buttons & WUPS_CONFIG_BUTTON_A) == WUPS_CONFIG_BUTTON_A) {
-        CCRCDCWowlWakeDrcArgs wakeDrcArgs = {.arg = 1};
+        CCRCDCWowlWakeDrcArg wakeDrcArg = {.state = CCR_CDC_WAKE_STATE_ACTIVE};
         OSTime timeToWake = OSGetSystemTime();
-        CCRCDCWowlWakeDrc(&wakeDrcArgs);
+        CCRCDCWowlWakeDrc(&wakeDrcArg);
         if (OSGetSystemTime() < (timeToWake + (OSTime) OSMillisecondsToTicks(830))) {
             item->value = 1;
         } else {

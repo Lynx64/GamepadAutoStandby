@@ -22,8 +22,13 @@ INITIALIZE_PLUGIN()
     
     if (gShutdownOnBoot) {
         uint32_t bootFlags = OSGetBootPMFlags();
-        if ((bootFlags & 0x8000002) == 0) { //if gamepad not used to turn on the console
-            //then shutdown gamepad
+        /*  Check that the GamePad wasn't used to turn on the console and
+            this isn't an OS relaunch (OSForceFullRelaunch()).
+            (Starting at 0) Bit 1 or 27 - GamePad used to turn on the console.
+            Bit 13 - OS relaunch (OSForceFullRelaunch()).
+            See more https://wiiubrew.org/wiki/Boot1#PowerFlags */
+        if ((bootFlags & 0x8002002) == 0) {
+            //then shutdown GamePad
             CCRCDCSysConsoleShutdownInd(CCR_CDC_DESTINATION_DRC0);
             gInShutdown = true;
         }

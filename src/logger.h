@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 #define LOG_APP_TYPE                "P"
-#define LOG_APP_NAME                "GamePad Auto Standby"
+#define LOG_APP_NAME                "GamePadAutoStandby"
 
 #define __FILENAME_X__              (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 #define __FILENAME__                (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILENAME_X__)
@@ -18,7 +18,7 @@ extern "C" {
 
 #define LOG_EX(LOG_FUNC, LOG_LEVEL, LINE_END, FMT, ARGS...)                                                                                              \
     do {                                                                                                                                                 \
-        LOG_FUNC("[(%s)%18s][%23s]%30s@L%04d: " LOG_LEVEL "" FMT "" LINE_END, LOG_APP_TYPE, LOG_APP_NAME, __FILENAME__, __FUNCTION__, __LINE__, ##ARGS); \
+        LOG_FUNC("[(%s)%s][%23s]%30s@L%04d: " LOG_LEVEL "" FMT "" LINE_END, LOG_APP_TYPE, LOG_APP_NAME, __FILENAME__, __FUNCTION__, __LINE__, ##ARGS); \
     } while (0)
 
 

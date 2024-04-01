@@ -1,8 +1,10 @@
 #include "main.h"
 #include "config.h"
 #include "retain_vars.hpp"
+#include "logger.h"
 #include <wups.h>
 #include <nsysccr/cdc.h>
+#include <coreinit/time.h>
 
 // Mandatory plugin info
 WUPS_PLUGIN_NAME("GamePad Auto Standby");
@@ -15,7 +17,7 @@ WUPS_USE_WUT_DEVOPTAB();
 
 extern "C" uint32_t OSGetBootPMFlags(void);
 
-// Called when exiting the plugin loader
+// Gets called ONCE when the plugin was loaded
 INITIALIZE_PLUGIN()
 {
     initConfig();
@@ -28,9 +30,15 @@ INITIALIZE_PLUGIN()
             Bit 13 - OS relaunch (OSForceFullRelaunch()).
             See more https://wiiubrew.org/wiki/Boot1#PowerFlags */
         if ((bootFlags & 0x8002002) == 0) {
-            //then shutdown GamePad
-            CCRCDCSysConsoleShutdownInd(CCR_CDC_DESTINATION_DRC0);
-            gInShutdown = true;
+            // Determine whether there has been a plugin reload by checking OS uptime
+            // Get uptime in ticks and convert to seconds
+            OSTime uptime = OSTicksToSeconds(OSGetSystemTime());
+            if (uptime < 300) { //super lenient
+                //then shutdown GamePad
+                DEBUG_FUNCTION_LINE_INFO("Shutting down GamePad on boot (BootPMFlags: 0x%08X , Uptime: %lld secs)", bootFlags, uptime);
+                CCRCDCSysConsoleShutdownInd(CCR_CDC_DESTINATION_DRC0);
+                gInShutdown = true;
+            }
         }
     }
 }

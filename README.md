@@ -14,6 +14,13 @@ where [ENVIRONMENT] is the actual environment name (most likely 'aroma')
 ## Usage
 Open the plugin config menu by pressing L, DPAD Down and Minus on the GamePad, Pro Controller or Classic Controller, or B, DPAD Down and Minus on a Wii Remote.
 
+Default settings:
+- On idle mode: Standby
+- Delay: 5 minutes (lowest possible is 1 minute, highest 60)
+- Power off on boot: false
+- Keep on while charging: false
+- Wii forwarders on TV only: true
+
 ## Building
 For building you need:
 - [wups](https://github.com/wiiu-env/WiiUPluginSystem)

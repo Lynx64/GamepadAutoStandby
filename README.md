@@ -2,6 +2,8 @@
 This is a Wii U plugin which makes the GamePad automatically enter standby mode (screen off) or power off when left idle for a configurable amount of time (similar to any other controller).
 
 Additional features:
+- Option to power off the GamePad on boot.
+  - It will not power off if it was used to turn on the console.
 - Option to keep the GamePad on while it's charging/plugged in.
 - Power off/on the GamePad remotely from the plugin config menu (obviously it must be in range).
 - Launch .wuhb vWii forwarders on TV only instead of both screens.

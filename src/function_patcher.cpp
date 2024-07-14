@@ -8,8 +8,6 @@
 #include <coreinit/title.h>
 #include <sysapp/title.h>
 
-extern "C" uint32_t VPADGetButtonProcMode(VPADChan chan);
-
 static OSTime sLastInputGamepad = OSGetSystemTime();
 static bool sInStandby = false;
 

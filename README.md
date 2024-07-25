@@ -6,7 +6,6 @@ Additional features:
   - It will not power off if it was used to turn on the console.
 - Option to keep the GamePad on while it's charging/plugged in.
 - Power off/on the GamePad remotely from the plugin config menu (obviously it must be in range).
-- Launch .wuhb vWii forwarders on TV only instead of both screens.
 
 ## Installation
 Download the latest release from the [Releases page](https://github.com/Lynx64/GamepadAutoStandby/releases)<br/>
@@ -21,7 +20,6 @@ Default settings:
 - Delay: 5 minutes (lowest possible is 1 minute, highest 60)
 - Power off on boot: false
 - Keep on while charging: false
-- Wii forwarders on TV only: true
 
 ## Building
 For building you need:

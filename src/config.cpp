@@ -15,10 +15,7 @@ void boolItemCallback(ConfigItemBoolean *item, bool newValue)
 {
     if (item && item->identifier) {
         //new value changed
-        if (std::string_view(WII_FORWARDER_TV_ONLY_CONFIG_ID) == item->identifier) {
-            gWiiForwarderTVOnly = newValue;
-            WUPSStorageAPI_StoreBool(nullptr, item->identifier, gWiiForwarderTVOnly);
-        } else if (std::string_view(KEEP_ON_WHILE_CHARGING_CONFIG_ID) == item->identifier) {
+        if (std::string_view(KEEP_ON_WHILE_CHARGING_CONFIG_ID) == item->identifier) {
             gKeepOnWhileCharging = newValue;
             WUPSStorageAPI_StoreBool(nullptr, item->identifier, gKeepOnWhileCharging);
         } else if (std::string_view(SHUTDOWN_ON_BOOT_CONFIG_ID) == item->identifier) {
@@ -102,9 +99,6 @@ WUPSConfigAPICallbackStatus ConfigMenuOpenedCallback(WUPSConfigCategoryHandle ro
     if (WUPSConfigItemBoolean_AddToCategory(settings, KEEP_ON_WHILE_CHARGING_CONFIG_ID, "Keep on while charging", DEFAULT_KEEP_ON_WHILE_CHARGING_VALUE, gKeepOnWhileCharging, &boolItemCallback) != WUPSCONFIG_API_RESULT_SUCCESS)
         return WUPSCONFIG_API_CALLBACK_RESULT_ERROR;
 
-    if (WUPSConfigItemBoolean_AddToCategory(settings, WII_FORWARDER_TV_ONLY_CONFIG_ID, "Launch .wuhb vWii forwarders on TV only", DEFAULT_WII_FORWARDER_TV_ONLY_VALUE, gWiiForwarderTVOnly, &boolItemCallback) != WUPSCONFIG_API_RESULT_SUCCESS)
-        return WUPSCONFIG_API_CALLBACK_RESULT_ERROR;
-
     if (WUPSConfigAPI_Category_AddCategory(rootHandle, settings) != WUPSCONFIG_API_RESULT_SUCCESS)
         return WUPSCONFIG_API_CALLBACK_RESULT_ERROR;
     return WUPSCONFIG_API_CALLBACK_RESULT_SUCCESS;
@@ -129,10 +123,6 @@ void initConfig()
 
     if (WUPSStorageAPI_GetInt(nullptr, STANDBY_DELAY_CONFIG_ID, &gStandbyDelay) == WUPS_STORAGE_ERROR_NOT_FOUND) {
         WUPSStorageAPI_StoreInt(nullptr, STANDBY_DELAY_CONFIG_ID, gStandbyDelay);
-    }
-
-    if (WUPSStorageAPI_GetBool(nullptr, WII_FORWARDER_TV_ONLY_CONFIG_ID, &gWiiForwarderTVOnly) == WUPS_STORAGE_ERROR_NOT_FOUND) {
-        WUPSStorageAPI_StoreBool(nullptr, WII_FORWARDER_TV_ONLY_CONFIG_ID, gWiiForwarderTVOnly);
     }
 
     if (WUPSStorageAPI_GetBool(nullptr, KEEP_ON_WHILE_CHARGING_CONFIG_ID, &gKeepOnWhileCharging) == WUPS_STORAGE_ERROR_NOT_FOUND) {

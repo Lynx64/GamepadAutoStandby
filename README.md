@@ -16,9 +16,9 @@ For convenience, you can download GamePad Auto Standby directly on your console 
   </a>
 </p>
 
-Alternatively, download the latest release from the [Releases page](https://github.com/Lynx64/GamepadAutoStandby/releases)<br/>
-Copy the `.wps` file into `wiiu/environments/[ENVIRONMENT]/plugins`<br/>
-where [ENVIRONMENT] is the actual environment name (most likely 'aroma')
+Alternatively, download the latest release from the [Releases page](https://github.com/Lynx64/GamepadAutoStandby/releases) by clicking on `gamepad_auto_standby.wps`.<br/>
+Copy the `gamepad_auto_standby.wps` file into `wiiu/environments/[ENVIRONMENT]/plugins`,<br/>
+where [ENVIRONMENT] is the actual environment name (most likely 'aroma').
 
 ## Usage
 Open the plugin config menu by pressing L, DPAD Down and Minus on the GamePad, Pro Controller or Classic Controller, or B, DPAD Down and Minus on a Wii Remote.

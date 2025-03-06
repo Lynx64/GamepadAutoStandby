@@ -8,6 +8,12 @@ Additional features:
 - Power off/on the GamePad remotely from the plugin config menu (obviously it must be in range).
 
 ## Installation
+<p align="center">
+  <a href="https://hb-app.store/wiiu/GamePadAutoStandby">
+    <img width="335" alt="Get it on the Homebrew App Store" src="https://github.com/user-attachments/assets/4471a846-9e8f-4a93-9a5c-a252e70d053a" />
+  </a>
+</p>
+
 Download the latest release from the [Releases page](https://github.com/Lynx64/GamepadAutoStandby/releases)<br/>
 Copy the `.wps` file into `wiiu/environments/[ENVIRONMENT]/plugins`<br/>
 where [ENVIRONMENT] is the actual environment name (most likely 'aroma')

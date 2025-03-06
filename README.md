@@ -8,6 +8,8 @@ Additional features:
 - Power off/on the GamePad remotely from the plugin config menu (obviously it must be in range).
 
 ## Installation
+For convenience, you can download GamePad Auto Standby directly on your Wii U from the [Homebrew App Store](https://github.com/fortheusers/hb-appstore).
+
 <p align="center">
   <a href="https://hb-app.store/wiiu/GamePadAutoStandby">
     <img width="335" alt="Get it on the Homebrew App Store" src="https://github.com/user-attachments/assets/4471a846-9e8f-4a93-9a5c-a252e70d053a" />

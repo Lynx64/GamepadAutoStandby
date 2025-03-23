@@ -31,7 +31,7 @@ Default settings:
 
 ## Building
 For building you need:
-- [wups](https://github.com/wiiu-env/WiiUPluginSystem)
 - [wut](https://github.com/devkitPro/wut)
+- [wups](https://github.com/wiiu-env/WiiUPluginSystem)
 
 then run `make`
